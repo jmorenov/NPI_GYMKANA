@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <EditText
+    android:id="coodernadas"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:inputType="number"
+    android:imeOptions="actionSend" />
+    
 </lint>
