@@ -1,233 +1,103 @@
 package com.NPI_GYMKANA.appgpsvoz;
 
-import android.app.Activity;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.TextView;
- 
-/**
- * MainActivity to handle sensors events
- *
- * @author David Gasquez
- */
-public class MainActivity extends Activity implements SensorEventListener {
- 
-    // TextViews
-    private TextView distanceText;
- 
-    // Create longitude and latitude variables
-    private double latitude;
-    private double longitude;
- 
-    // Create distance
-    private double distance;
- 
-    // Initialize ImageView
-    private ImageView image;
- 
-    // Degrees
-    private float currentDegree = 0.0f;
-    private float lastDegree = 0.0f;
- 
-    // Sensors and location
-    private SensorManager mSensorManager;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private Location lastLocation;
-    private Location dest;
-    
-    double latitudeIn, longitudeIn;
- 
-    /**
-     * Main method called when the app is opened
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // Set the view
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
- 
-        // Fill the image with the compass
-        image = (ImageView) findViewById(R.id.imageViewCompass);
- 
-        // Initial distance is 0
-        distance = 0;
-        
-        latitudeIn = 37.19678168548899;
-        longitudeIn = -3.62465459523194;
-        
-        ///////////////////////////////////////////////////////////////
+import java.util.ArrayList;
 
- 
-        // Set other texts
-        distanceText = (TextView) findViewById(R.id.distanceText);
- 
-        // Initialize sensors
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        dest = new Location("loc");
-        dest.setLatitude(latitudeIn);
-        dest.setLongitude(longitudeIn);
-    }
- 
-    /**
-     * Method called when the app resumes his activity
-     */
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity implements OnClickListener  {
+
+    private TextView mText;
+    private SpeechRecognizer sr;
+    private static final String TAG = "MyStt3Activity";
     @Override
-    protected void onResume() {
-        super.onResume();
- 
-        // Continue listening the orientation sensor
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
+    public void onCreate(Bundle savedInstanceState) 
+    {
+             super.onCreate(savedInstanceState);
+             setContentView(R.layout.layout);
+             Button speakButton = (Button) findViewById(R.id.btn_speak);     
+             mText = (TextView) findViewById(R.id.speech);     
+             speakButton.setOnClickListener(this);
+             sr = SpeechRecognizer.createSpeechRecognizer(this);       
+             sr.setRecognitionListener(new listener());        
     }
- 
-    /**
-     * Method called when the app pauses his activity
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
- 
-        // Stop listening the sensor
-        mSensorManager.unregisterListener(this);
+
+    class listener implements RecognitionListener          
+    {
+             public void onReadyForSpeech(Bundle params)
+             {
+                      Log.d(TAG, "onReadyForSpeech");
+             }
+             public void onBeginningOfSpeech()
+             {
+                      Log.d(TAG, "onBeginningOfSpeech");
+             }
+             public void onRmsChanged(float rmsdB)
+             {
+                      Log.d(TAG, "onRmsChanged");
+             }
+             public void onBufferReceived(byte[] buffer)
+             {
+                      Log.d(TAG, "onBufferReceived");
+             }
+             public void onEndOfSpeech()
+             {
+                      Log.d(TAG, "onEndofSpeech");
+             }
+             public void onError(int error)
+             {
+                      Log.d(TAG,  "error " +  error);
+                      mText.setText("error " + error);
+             }
+             public void onResults(Bundle results)                   
+             {
+                      String str = new String();
+                      Log.d(TAG, "onResults " + results);
+                      ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                      for (int i = 0; i < data.size(); i++)
+                      {
+                                Log.d(TAG, "result " + data.get(i));
+                                str += data.get(i);
+                      }
+                      mText.setText("results: "+String.valueOf(data.size()));        
+             }
+             public void onPartialResults(Bundle partialResults)
+             {
+                      Log.d(TAG, "onPartialResults");
+             }
+             public void onEvent(int eventType, Bundle params)
+             {
+                      Log.d(TAG, "onEvent " + eventType);
+             }
     }
- 
-    /**
-     * Method called when the sensor status changes
-     */
-    @Override
-    public void onSensorChanged(SensorEvent event) {
- 
-        // Get the degree
-        //lastDegree = Math.round(event.values[0]);
-        lastDegree = lastLocation.bearingTo(dest);
-        
-        // Create and exetute rotation animation
-        RotateAnimation rotation;
-        rotation = new RotateAnimation(
-                currentDegree,
-                -lastDegree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
- 
-        rotation.setDuration(300);
-        rotation.setFillAfter(true);
-        image.startAnimation(rotation);
- 
-        // Update current degree
-        currentDegree = -lastDegree;
- 
-        // Update GPS coordinates
-        updateCoordinates();
- 
+    public void onClick(View v) {
+             if (v.getId() == R.id.btn_speak) 
+             {
+                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);        
+                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                 intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
+
+                 intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5); 
+                      sr.startListening(intent);
+                      Log.i("111111","11111111");
+             }
     }
- 
-    /**
-     * Update the GPS cordinates
-     */
-    private void updateCoordinates() {
-        // Make a location listener
-        locationListener = new LocationListener() {
- 
-            // Aux
-            int i = 0;
- 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
- 
-            @Override
-            public void onProviderEnabled(String provider) {
-                lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
- 
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
- 
-            /**
-             * When user location change, we compute distances and update coordinates texts
-             */
-            @Override
-            public void onLocationChanged(Location location) {
- 
-                // First time we make lastLocation=location to later compute distances
-                if (i == 0) {
-                    lastLocation = location;
-                    i++;
-                }
- 
-                // Get location from GPS
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
- 
-                // Compute distance to lastLocation
-                if (location.distanceTo(lastLocation) > 15.0) {
-                    distance += location.distanceTo(lastLocation);
-                    distanceText.setText(String.valueOf(distance + " meters"));
-                }
- 
-                // Update and show location
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
- 
-                if (location.distanceTo(lastLocation) > 15.0) {
-                    lastLocation = location;
-                }
-            }
-        };
- 
-        // Ask GPS updates every 10000 ms
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
-    }
- 
-    /**
-     * Called when the accuracy of the registered sensor has changed.
-     * <p/>
-     * <p>See the SENSOR_STATUS_* constants in
-     * {@link android.hardware.SensorManager SensorManager} for details.
-     *
-     * @param sensor   Sensor type
-     * @param accuracy The new accuracy of this sensor, one of
-     *                 {@code SensorManager.SENSOR_STATUS_*}
-     */
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
- 
-    }
- 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
- 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
- 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
- 
-        return super.onOptionsItemSelected(item);
-    }
+    
 }
