@@ -1,54 +1,54 @@
 package com.NPI_GYMKANA.appgpsvoz;
 
-import java.util.ArrayList;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener  {
+public class MainActivity extends Activity{
 
-    private TextView mText, lat, lon;
-    private VoiceRecognition vr;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.layout);
+		
+		/*Intent voiceActivity = new Intent(this, VoiceRecognitionActivity.class);
+		startActivityForResult(voiceActivity, 1);*/
+		startGPSNavigation(0F, 0F);
+	}
+
+	/**
+     * Handle the results from the voice recognition activity.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
-             super.onCreate(savedInstanceState);
-             setContentView(R.layout.layout);
-             Button speakButton = (Button) findViewById(R.id.btn_speak);     
-             mText = (TextView) findViewById(R.id.speech);
-             lat = (TextView) findViewById(R.id.lat);    
-             lon = (TextView) findViewById(R.id.lon);    
-             speakButton.setOnClickListener(this);
-             vr = new VoiceRecognition(mText, lat, lon, this.getApplicationContext());
-    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if (requestCode == 1) {
+	        if(resultCode == RESULT_OK){
+	            float latitud = data.getFloatExtra("latitud", 0F);
+	            float longitud = data.getFloatExtra("longitud", 0F);
+	            if(latitud != 0F && longitud != 0F)
+	            	startGPSNavigation(latitud, longitud);
+	        }
+	        if (resultCode == RESULT_CANCELED) {
+	            //Write your code if there's no result
+	        }
+	    }
+	    else if (requestCode == 2) {
+	        if(resultCode == RESULT_OK){
+	            finish();
+	        }
+	        if (resultCode == RESULT_CANCELED) {
+	            //Write your code if there's no result
+	        }
+	    }
+	}
+	
+	public void startGPSNavigation(float latitud, float longitud) {
+		Intent GPSActivity = new Intent(this, GPSNavigationActivity.class);
+		GPSActivity.putExtra("latitud", latitud);
+		GPSActivity.putExtra("longitud", longitud);
+		startActivityForResult(GPSActivity, 2);
+	}
 
-    public void onClick(View v) {
-             if (v.getId() == R.id.btn_speak) 
-             {
-                 vr.startRecognition();
-             }
-    }
-    
-    public void startGPSNavigation(float latitud, float longitud)
-    {
-	Toast.makeText(this.getApplicationContext(), latitud+" "+longitud, Toast.LENGTH_SHORT).show();
-    }
-    
 }

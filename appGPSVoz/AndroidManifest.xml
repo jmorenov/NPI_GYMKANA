@@ -26,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".VoiceRecognitionActivity"
+            android:label="ReconocimientoDeVoz" >
+        </activity>
+        <activity
+            android:name=".GPSNavigationActivity"
+            android:label="NavegacionGPS" >
+        </activity>
     </application>
 
 </manifest>
