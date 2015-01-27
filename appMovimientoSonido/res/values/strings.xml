@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">appMovimientoSonido</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="title_activity_movement_sound">MovimientoSonido</string>
+	<string name="welcome">PuntoMovimientoSonido</string>
+	<string name="button_start">Iniciar appMovimientoSonido.</string>
+	<string name="result">Movimiento realizado correctamente y sonido reproducido.</string>
+	<string name="app_description">Explicación: Agitar el dispositivo hacia la izquierda y seguido a la derecha.</string>
+	<string name="playing_sound">Reproduciendo sonido</string>
+	
 </resources>

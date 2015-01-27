@@ -4,25 +4,18 @@
     android:layout_height="match_parent"
     android:background="#33B5E5"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MovementSoundActivity" >
 
     <TextView
-        android:id="@+id/welcome"
+        android:id="@+id/app_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/welcome"
-        android:textSize="25sp" />
-
-    <Button
-        android:id="@+id/button_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/button_start" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/action_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
