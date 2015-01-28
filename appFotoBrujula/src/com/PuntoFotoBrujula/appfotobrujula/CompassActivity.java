@@ -18,7 +18,7 @@
  */
 
 
-package com.NPI_GYMKANA.appfotobrujula;
+package com.PuntoFotoBrujula.appfotobrujula;
 
 import android.app.Activity;
 import android.content.Intent;

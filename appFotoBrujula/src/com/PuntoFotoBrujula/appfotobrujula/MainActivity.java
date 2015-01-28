@@ -17,7 +17,7 @@
  * along with appFotoBrujula.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.NPI_GYMKANA.appfotobrujula;
+package com.PuntoFotoBrujula.appfotobrujula;
 
 import android.app.Activity;
 import android.content.Intent;
