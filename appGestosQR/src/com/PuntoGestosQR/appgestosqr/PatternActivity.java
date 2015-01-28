@@ -1,3 +1,22 @@
+/**
+ * Copyright 2014 Javier Moreno, Alberto Quesada
+ *
+ * This file is part of appGestosQR.
+ *
+ * MultiTouch is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MultiTouch is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MultitTouch.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.PuntoGestosQR.appgestosqr;
 
 import java.util.ArrayList;
@@ -20,9 +39,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+/**
+ * Clase PatternActivity. Controla los patrones a detectar.
+ *
+ * @author Francisco Javier Moreno Vega
+ * @author Alberto Quesada Aranda
+ * @version 28.01.2015
+ * @since 20.01.2015
+ */
 public class PatternActivity extends Activity implements OnClickListener,
 		OnTouchListener {
 
+    /**
+    * Definición de los patrones.
+    */
 	ArrayList<ImageView> pattern = new ArrayList<ImageView>();
 	int[] ids = { R.id.pattern_1, R.id.pattern_2, R.id.pattern_3,
 			R.id.pattern_4, R.id.pattern_5, R.id.pattern_6, R.id.pattern_7,
@@ -45,6 +76,25 @@ public class PatternActivity extends Activity implements OnClickListener,
 	
 	private static String TAG = "PatternActivity";
 
+            
+     /**
+        * Called when the activity is starting. This is where most initialization
+        * should go: calling setContentView(int) to inflate the activity's UI,
+        * using findViewById(int) to programmatically interact with widgets in the
+        * UI, calling managedQuery(android.net.Uri, String[], String, String[],
+        * String) to retrieve cursors for data being displayed, etc.
+        * <p>
+        * You can call finish() from within this function, in which case
+        * onDestroy() will be immediately called without any of the rest of the
+        * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
+        *
+        *
+        * @param savedInstanceState
+        *            If the activity is being re-initialized after previously being
+        *            shut down then this Bundle contains the data it most recently
+        *            supplied in onSaveInstanceState(Bundle).
+        */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +109,26 @@ public class PatternActivity extends Activity implements OnClickListener,
 		}
 	}
 
+            
+            /**
+             * Método que se llama cuando se detecta una pulsación en la pantalla.
+             *
+             * Implement this method to handle touch screen motion events.
+             *
+             * If this method is used to detect click actions, it is recommended that
+             * the actions be performed by implementing and calling performClick(). This
+             * will ensure consistent system behavior, including:
+             *
+             * - obeying click sound preferences - dispatching OnClickListener calls -
+             * handling ACTION_CLICK when accessibility features are enabled
+             *
+             * @param event
+             *            The motion event
+             *
+             * @return True if the event was handled, false otherwise.
+             *
+             */
+            
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (pattern.contains(v)) {
@@ -84,6 +154,10 @@ public class PatternActivity extends Activity implements OnClickListener,
 		return false;
 	}
 
+            
+    /**
+    *
+    */
 	private void checkStatus()
 	{
 		boolean finish = false;
@@ -127,6 +201,10 @@ public class PatternActivity extends Activity implements OnClickListener,
 		}
 	}
 	
+            
+    /**
+    *
+    */
 	private boolean checkPatterns() {
 		
 		for(int i=0; i<patterns.length; i++)
@@ -142,6 +220,10 @@ public class PatternActivity extends Activity implements OnClickListener,
 		return false;
 	}
 
+            
+    /**
+    *
+    */
 	private boolean checkPattern(int [] pattern, String name)
 	{
 		if(pattern_input.size() == pattern.length)
@@ -155,12 +237,21 @@ public class PatternActivity extends Activity implements OnClickListener,
 		return false;
 	}
 	
+            
+            
+    /**
+    *
+    */
 	private void drawPattern(int c) {
 		for (int i = 0; i < pattern.size(); i++)
 			if (pattern_input.contains(new Integer(i)))
 				pattern.get(i).setColorFilter(c);
 	}
 
+            
+    /**
+    *
+    */
 	private void cleanPattern() {
 		for (int i = 0; i < pattern.size(); i++)
 			pattern.get(i).setColorFilter(null);
@@ -170,6 +261,10 @@ public class PatternActivity extends Activity implements OnClickListener,
 	Rect outRect = new Rect();
 	int[] location = new int[2];
 
+            
+    /**
+    *
+    */
 	private boolean inViewInBounds(ImageView view, int x, int y) {
 		view.getDrawingRect(outRect);
 		view.getLocationOnScreen(location);

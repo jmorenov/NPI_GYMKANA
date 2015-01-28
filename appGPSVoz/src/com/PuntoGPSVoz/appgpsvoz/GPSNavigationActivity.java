@@ -1,3 +1,22 @@
+/**
+ * Copyright 2014 Javier Moreno, Alberto Quesada
+ *
+ * This file is part of appGPSVoz.
+ *
+ * MultiTouch is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MultiTouch is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MultitTouch.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.PuntoGPSVoz.appgpsvoz;
 
 import com.NPI_GYMKANA.appgpsvoz.R;
@@ -22,6 +41,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/**
+ * Clase PatternActivity. Controla los patrones a detectar.
+ *
+ * @author Francisco Javier Moreno Vega
+ * @author Alberto Quesada Aranda
+ * @version 28.01.2015
+ * @since 20.01.2015
+ */
 public class GPSNavigationActivity extends Activity implements
 		SensorEventListener {
 
@@ -46,6 +74,24 @@ public class GPSNavigationActivity extends Activity implements
 
 	private static float MIN_DISTANCE_TO_DESTINATION = 100;
 
+            
+            /**
+             * Called when the activity is starting. This is where most initialization
+             * should go: calling setContentView(int) to inflate the activity's UI,
+             * using findViewById(int) to programmatically interact with widgets in the
+             * UI, calling managedQuery(android.net.Uri, String[], String, String[],
+             * String) to retrieve cursors for data being displayed, etc.
+             * <p>
+             * You can call finish() from within this function, in which case
+             * onDestroy() will be immediately called without any of the rest of the
+             * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
+             *
+             *
+             * @param savedInstanceState
+             *            If the activity is being re-initialized after previously being
+             *            shut down then this Bundle contains the data it most recently
+             *            supplied in onSaveInstanceState(Bundle).
+             */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -159,6 +205,10 @@ public class GPSNavigationActivity extends Activity implements
 
 	}
 
+            
+            /**
+             *
+             */
 	public void startGPSNavigation(float latitud, float longitud) {
 		/*Toast.makeText(this.getApplicationContext(),
 				"Navegación GPS hacia..." + latitud + " " + longitud,
@@ -174,7 +224,10 @@ public class GPSNavigationActivity extends Activity implements
 		// location updates: at least 1 meter and 200millsecs change
 		locationManager.requestLocationUpdates(provider, 200, 1, gpsNav);
 	}
-
+            
+            /**
+             *
+             */
 	private float normalizeDegree(float value) {
 		if (value >= 0.0f && value <= 180.0f) {
 			return value;
@@ -182,13 +235,19 @@ public class GPSNavigationActivity extends Activity implements
 			return 180 + (180 + value);
 		}
 	}
-
+            
+            /**
+             *
+             */
 	private void destinationReached() {
 		Intent returnIntent = new Intent();
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}
-
+            
+            /**
+             *
+             */
 	private class GPSNavigation implements LocationListener {
 
 		@Override
@@ -217,14 +276,20 @@ public class GPSNavigationActivity extends Activity implements
 			 * Toast.LENGTH_SHORT).show();
 			 */
 		}
-
+        
+        /**
+         *
+         */
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			Toast.makeText(GPSNavigationActivity.this,
 					provider + "'s status changed to " + status + "!",
 					Toast.LENGTH_SHORT).show();
 		}
-
+        
+        /**
+         *
+         */
 		@Override
 		public void onProviderEnabled(String provider) {
 			Toast.makeText(GPSNavigationActivity.this,
@@ -232,7 +297,10 @@ public class GPSNavigationActivity extends Activity implements
 					.show();
 
 		}
-
+        
+        /**
+         *
+         */
 		@Override
 		public void onProviderDisabled(String provider) {
 			Toast.makeText(GPSNavigationActivity.this,
