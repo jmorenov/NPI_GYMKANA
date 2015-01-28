@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33B5E5"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/app_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_description"
+        android:textSize="20sp" />
+
+     <TableLayout
+         android:id="@+id/tableLayout1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/app_description"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="65dp"
+         android:stretchColumns="1" >
+
+         <Button
+             android:id="@+id/button_north"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="10dp"
+             android:text="@string/button_north" />
+
+         <Button
+             android:id="@+id/button_east"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="10dp"
+             android:text="@string/button_east" />
+
+         <Button
+             android:id="@+id/button_west"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="10dp"
+             android:text="@string/button_west" />
+
+         <Button
+             android:id="@+id/button_south"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="10dp"
+             android:text="@string/button_south" />
+     </TableLayout>
+
+</RelativeLayout>
