@@ -641,7 +641,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (ecLevel != null) {
           intent.putExtra(Intents.Scan.RESULT_ERROR_CORRECTION_LEVEL, ecLevel);
         }
-        Iterable<byte[]> byteSegments = (Iterable<byte[]>) metadata.get(ResultMetadataType.BYTE_SEGMENTS);
+        @SuppressWarnings("unchecked")
+		Iterable<byte[]> byteSegments = (Iterable<byte[]>) metadata.get(ResultMetadataType.BYTE_SEGMENTS);
         if (byteSegments != null) {
           int i = 0;
           for (byte[] byteSegment : byteSegments) {
@@ -694,7 +695,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
    * run. The easiest way to do this is to check android:versionCode from the manifest, and compare
    * it to a value stored as a preference.
    */
-  private boolean showHelpOnFirstLaunch() {
+  @SuppressWarnings("unused")
+private boolean showHelpOnFirstLaunch() {
     try {
       PackageInfo info = getPackageManager().getPackageInfo(PACKAGE_NAME, 0);
       int currentVersion = info.versionCode;
