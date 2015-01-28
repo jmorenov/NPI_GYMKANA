@@ -3,18 +3,18 @@
  *
  * This file is part of appMovimientoSonido.
  *
- * MultiTouch is free software: you can redistribute it and/or modify
+ * appMovimientoSonido is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * MultiTouch is distributed in the hope that it will be useful,
+ * appMovimientoSonido is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with MultitTouch.  If not, see <http://www.gnu.org/licenses/>.
+ * along with appMovimientoSonido.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.PuntoMovimientoSonido.appmovimientosonido;
@@ -50,32 +50,29 @@ public class MovementSoundActivity extends Activity implements
 	private TextView result;
 
 	private double cX;
-	/*
-	 * private double cY; private double cZ;
-	 */
+
 	private boolean first = true;
 	private boolean left = false;
 	private boolean movement_ok = false;
 
-            
-            /**
-             * Called when the activity is starting. This is where most initialization
-             * should go: calling setContentView(int) to inflate the activity's UI,
-             * using findViewById(int) to programmatically interact with widgets in the
-             * UI, calling managedQuery(android.net.Uri, String[], String, String[],
-             * String) to retrieve cursors for data being displayed, etc.
-             * <p>
-             * You can call finish() from within this function, in which case
-             * onDestroy() will be immediately called without any of the rest of the
-             * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
-             *
-             *
-             * @param savedInstanceState
-             *            If the activity is being re-initialized after previously being
-             *            shut down then this Bundle contains the data it most recently
-             *            supplied in onSaveInstanceState(Bundle).
-             */
-        
+	/**
+	 * Called when the activity is starting. This is where most initialization
+	 * should go: calling setContentView(int) to inflate the activity's UI,
+	 * using findViewById(int) to programmatically interact with widgets in the
+	 * UI, calling managedQuery(android.net.Uri, String[], String, String[],
+	 * String) to retrieve cursors for data being displayed, etc.
+	 * <p>
+	 * You can call finish() from within this function, in which case
+	 * onDestroy() will be immediately called without any of the rest of the
+	 * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
+	 *
+	 *
+	 * @param savedInstanceState
+	 *            If the activity is being re-initialized after previously being
+	 *            shut down then this Bundle contains the data it most recently
+	 *            supplied in onSaveInstanceState(Bundle).
+	 */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,28 +100,10 @@ public class MovementSoundActivity extends Activity implements
 		}
 	}
 
-    /**
-    *
-    */
-	@Override
-	protected void onResume() {
-		super.onResume(); // registro del listener
-		mSensorManager.registerListener(this, mAcceleSensor,
-				SensorManager.SENSOR_DELAY_GAME);
-	}
-
-    /**
-    *
-    */
-	@Override
-	protected void onStop() { // anular el registro del listener
-		mSensorManager.unregisterListener(this);
-		super.onStop();
-	}
-
-    /**
-    *
-    */
+	/**
+	 * Reproduce un sonido, cuando finaliza la reproducción termina la ejecución
+	 * de la activity.
+	 */
 	private void playSound() {
 		result.setText(R.string.playing_sound);
 		MediaPlayer mp1 = MediaPlayer.create(MovementSoundActivity.this,
@@ -140,21 +119,26 @@ public class MovementSoundActivity extends Activity implements
 		});
 	}
 
-    /**
-    *
-    */
+	/**
+	 * Called when sensor values have changed. The length and contents of the
+	 * values array vary depending on which sensor is being monitored
+	 * 
+	 * Detecta el movimiento del dispositivo a la izquierda y después a la
+	 * derecha, cuando se realiza correctamente se reproduce un sonido.
+	 * 
+	 * @param event
+	 *            Objeto SensorEvent que controla las variaciones de los
+	 *            sensores.
+	 * 
+	 * @see playSound
+	 * 
+	 */
 	@Override
 	public final void onSensorChanged(SensorEvent event) {
 		double X = event.values[0];
-		/*
-		 * double Y = event.values[1]; double Z = event.values[2];
-		 */
 
 		if (first) {
 			cX = X;
-			/*
-			 * cY = Y; cZ = Z;
-			 */
 			first = false;
 		} else if (!movement_ok) {
 			if (X > cX + 20) {
@@ -169,12 +153,6 @@ public class MovementSoundActivity extends Activity implements
 				else
 					left = false;
 			}
-			/*
-			 * else if(Z > cZ + 20) { Log.d("MOVIMIENTO", "Abajo: " + cZ + " " +
-			 * Z); result.setText("Abajo"); } else if(Z < cZ - 20) {
-			 * Log.d("MOVIMIENTO", "Arriba: " + cZ + " " + Z);
-			 * result.setText("Arriba"); }
-			 */
 			cX = X;
 
 			if (movement_ok)
@@ -187,4 +165,17 @@ public class MovementSoundActivity extends Activity implements
 		// TODO Auto-generated method stub
 
 	};
+
+	@Override
+	protected void onResume() {
+		super.onResume(); // registro del listener
+		mSensorManager.registerListener(this, mAcceleSensor,
+				SensorManager.SENSOR_DELAY_GAME);
+	}
+
+	@Override
+	protected void onStop() { // anular el registro del listener
+		mSensorManager.unregisterListener(this);
+		super.onStop();
+	}
 }
