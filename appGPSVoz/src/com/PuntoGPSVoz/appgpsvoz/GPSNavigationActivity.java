@@ -3,18 +3,18 @@
  *
  * This file is part of appGPSVoz.
  *
- * MultiTouch is free software: you can redistribute it and/or modify
+ * appGPSVoz is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * MultiTouch is distributed in the hope that it will be useful,
+ * appGPSVoz is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with MultitTouch.  If not, see <http://www.gnu.org/licenses/>.
+ * along with appGPSVoz.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.PuntoGPSVoz.appgpsvoz;
@@ -39,8 +39,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 /**
  * Clase PatternActivity. Controla los patrones a detectar.
@@ -72,26 +70,29 @@ public class GPSNavigationActivity extends Activity implements
 	private float heading;
 	private float distance;
 
+	/**
+	 * Mínima distancia necesaria (en metros) para determinar que se ha llegado
+	 * al destino.
+	 */
 	private static float MIN_DISTANCE_TO_DESTINATION = 100;
 
-            
-            /**
-             * Called when the activity is starting. This is where most initialization
-             * should go: calling setContentView(int) to inflate the activity's UI,
-             * using findViewById(int) to programmatically interact with widgets in the
-             * UI, calling managedQuery(android.net.Uri, String[], String, String[],
-             * String) to retrieve cursors for data being displayed, etc.
-             * <p>
-             * You can call finish() from within this function, in which case
-             * onDestroy() will be immediately called without any of the rest of the
-             * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
-             *
-             *
-             * @param savedInstanceState
-             *            If the activity is being re-initialized after previously being
-             *            shut down then this Bundle contains the data it most recently
-             *            supplied in onSaveInstanceState(Bundle).
-             */
+	/**
+	 * Called when the activity is starting. This is where most initialization
+	 * should go: calling setContentView(int) to inflate the activity's UI,
+	 * using findViewById(int) to programmatically interact with widgets in the
+	 * UI, calling managedQuery(android.net.Uri, String[], String, String[],
+	 * String) to retrieve cursors for data being displayed, etc.
+	 * <p>
+	 * You can call finish() from within this function, in which case
+	 * onDestroy() will be immediately called without any of the rest of the
+	 * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
+	 *
+	 *
+	 * @param savedInstanceState
+	 *            If the activity is being re-initialized after previously being
+	 *            shut down then this Bundle contains the data it most recently
+	 *            supplied in onSaveInstanceState(Bundle).
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,9 +108,6 @@ public class GPSNavigationActivity extends Activity implements
 			latitud = extras.getFloat("latitud", 0F);
 			longitud = extras.getFloat("longitud", 0F);
 		}
-		/*latitud = 37.19716626365634F;
-		longitud = -3.6242308062076067F;*/
-		
 		destination = new Location("Destino");
 		destination.setLatitude(latitud);
 		destination.setLongitude(longitud);
@@ -129,7 +127,16 @@ public class GPSNavigationActivity extends Activity implements
 		// the last known location of this provider
 		location = locationManager.getLastKnownLocation(provider);
 
-		startGPSNavigation(latitud, longitud);
+		gpsNav = new GPSNavigation();
+		if (location != null)
+			gpsNav.onLocationChanged(location);
+		else {
+			// leads to the settings because there is no last known location
+			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivity(intent);
+		}
+		// location updates: at least 1 meter and 200millsecs change
+		locationManager.requestLocationUpdates(provider, 200, 1, gpsNav);
 
 	}
 
@@ -205,29 +212,14 @@ public class GPSNavigationActivity extends Activity implements
 
 	}
 
-            
-            /**
-             *
-             */
-	public void startGPSNavigation(float latitud, float longitud) {
-		/*Toast.makeText(this.getApplicationContext(),
-				"Navegación GPS hacia..." + latitud + " " + longitud,
-				Toast.LENGTH_SHORT).show();*/
-		gpsNav = new GPSNavigation();
-		if (location != null)
-			gpsNav.onLocationChanged(location);
-		else {
-			// leads to the settings because there is no last known location
-			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			startActivity(intent);
-		}
-		// location updates: at least 1 meter and 200millsecs change
-		locationManager.requestLocationUpdates(provider, 200, 1, gpsNav);
-	}
-            
-            /**
-             *
-             */
+	/**
+	 * Normaliza los grados del heading de la navegación.
+	 * 
+	 * @param value
+	 *            Grados a normalizar.
+	 * 
+	 * @return grados normalizados.
+	 */
 	private float normalizeDegree(float value) {
 		if (value >= 0.0f && value <= 180.0f) {
 			return value;
@@ -235,19 +227,21 @@ public class GPSNavigationActivity extends Activity implements
 			return 180 + (180 + value);
 		}
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Método llamado cuando se ha llegado al destino. Termina la ejecución de
+	 * la activity.
+	 */
 	private void destinationReached() {
 		Intent returnIntent = new Intent();
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Clase que implementa el LocationListener necesario para detectar los
+	 * cambios en la posición.
+	 */
 	private class GPSNavigation implements LocationListener {
 
 		@Override
@@ -270,42 +264,18 @@ public class GPSNavigationActivity extends Activity implements
 
 			if (distance < MIN_DISTANCE_TO_DESTINATION)
 				destinationReached();
-
-			/*
-			 * Toast.makeText(GPSNavigationActivity.this, "Location changed!",
-			 * Toast.LENGTH_SHORT).show();
-			 */
 		}
-        
-        /**
-         *
-         */
+
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			Toast.makeText(GPSNavigationActivity.this,
-					provider + "'s status changed to " + status + "!",
-					Toast.LENGTH_SHORT).show();
 		}
-        
-        /**
-         *
-         */
+
 		@Override
 		public void onProviderEnabled(String provider) {
-			Toast.makeText(GPSNavigationActivity.this,
-					"Provider " + provider + " enabled!", Toast.LENGTH_SHORT)
-					.show();
-
 		}
-        
-        /**
-         *
-         */
+
 		@Override
 		public void onProviderDisabled(String provider) {
-			Toast.makeText(GPSNavigationActivity.this,
-					"Provider " + provider + " disabled!", Toast.LENGTH_SHORT)
-					.show();
 		}
 	}
 

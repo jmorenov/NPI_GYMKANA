@@ -3,18 +3,18 @@
  *
  * This file is part of appGPSVoz.
  *
- * MultiTouch is free software: you can redistribute it and/or modify
+ * appGPSVoz is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * MultiTouch is distributed in the hope that it will be useful,
+ * appGPSVoz is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with MultitTouch.  If not, see <http://www.gnu.org/licenses/>.
+ * along with appGPSVoz.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.PuntoGPSVoz.appgpsvoz;
@@ -36,7 +36,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 /**
  * Clase PatternActivity. Controla los patrones a detectar.
  *
@@ -54,24 +53,23 @@ public class VoiceRecognitionActivity extends Activity implements
 	private float longitud, latitud;
 	private Button speakButton, navigationButton;
 
-            
-            /**
-             * Called when the activity is starting. This is where most initialization
-             * should go: calling setContentView(int) to inflate the activity's UI,
-             * using findViewById(int) to programmatically interact with widgets in the
-             * UI, calling managedQuery(android.net.Uri, String[], String, String[],
-             * String) to retrieve cursors for data being displayed, etc.
-             * <p>
-             * You can call finish() from within this function, in which case
-             * onDestroy() will be immediately called without any of the rest of the
-             * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
-             *
-             *
-             * @param savedInstanceState
-             *            If the activity is being re-initialized after previously being
-             *            shut down then this Bundle contains the data it most recently
-             *            supplied in onSaveInstanceState(Bundle).
-             */
+	/**
+	 * Called when the activity is starting. This is where most initialization
+	 * should go: calling setContentView(int) to inflate the activity's UI,
+	 * using findViewById(int) to programmatically interact with widgets in the
+	 * UI, calling managedQuery(android.net.Uri, String[], String, String[],
+	 * String) to retrieve cursors for data being displayed, etc.
+	 * <p>
+	 * You can call finish() from within this function, in which case
+	 * onDestroy() will be immediately called without any of the rest of the
+	 * activity lifecycle (onStart(), onResume(), onPause(), etc) executing.
+	 *
+	 *
+	 * @param savedInstanceState
+	 *            If the activity is being re-initialized after previously being
+	 *            shut down then this Bundle contains the data it most recently
+	 *            supplied in onSaveInstanceState(Bundle).
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,10 +90,13 @@ public class VoiceRecognitionActivity extends Activity implements
 		speakButton.setOnClickListener(this);
 		navigationButton.setOnClickListener(this);
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Called when a view has been clicked.
+	 * 
+	 * @param view
+	 *            The view that was clicked.
+	 */
 	public void onClick(View v) {
 		if (v.getId() == R.id.button_speak)
 			startRecognition();
@@ -107,10 +108,11 @@ public class VoiceRecognitionActivity extends Activity implements
 			finish();
 		}
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Inicia el reconocimiento de la voz llamando a la activity
+	 * voice.recognition.test.
+	 */
 	public void startRecognition() {
 		Intent voice_intent = new Intent(
 				RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -134,10 +136,16 @@ public class VoiceRecognitionActivity extends Activity implements
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Comprueba si los resultados detectados por voz son correctos.
+	 * 
+	 * @param matches
+	 *            Lista de cadenas de caracteres detectadas en el reconocimiento
+	 *            de voz.
+	 * 
+	 * @see checkData
+	 */
 	private void checkResults(ArrayList<String> matches) {
 		checkData(matches, "latitud", lat);
 		checkData(matches, "longitud", lon);
@@ -148,10 +156,20 @@ public class VoiceRecognitionActivity extends Activity implements
 		else
 			navigationButton.setEnabled(false);
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Comprueba si los resultados detectados por voz son correctos.
+	 * 
+	 * @param data
+	 *            Lista de cadenas de caracteres detectadas en el reconocimiento
+	 *            de voz.
+	 * @param word
+	 *            Palabra a buscar en las cadenas de carácteres.
+	 * @param text
+	 *            TextView donde se definirá un resultado si es correcto.
+	 * 
+	 * @see checkResults
+	 */
 	private void checkData(ArrayList<String> data, String word, TextView text) {
 		float aux = search(data, word);
 		if (aux != 0F) {
@@ -163,10 +181,21 @@ public class VoiceRecognitionActivity extends Activity implements
 			text.setText(word + " : " + aux);
 		}
 	}
-            
-            /**
-             *
-             */
+
+	/**
+	 * Busca una palabra en una lista de cadenas de carácteres y devuelve el
+	 * valor numérico que sigue a esta palabra.
+	 * 
+	 * @param data
+	 *            Lista de cadenas de caracteres detectadas en el reconocimiento
+	 *            de voz.
+	 * 
+	 * @param word
+	 *            Palabra a buscar.
+	 * 
+	 * @see checkData
+	 * @see checkResults
+	 */
 	private float search(final ArrayList<String> data, String word) {
 		float f = 0F;
 		boolean found = false;
