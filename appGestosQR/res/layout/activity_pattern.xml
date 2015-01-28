@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#33B5E5" 
+    android:stretchColumns="3"
+    android:weightSum="3">
+
+
+     <TableRow android:id="@+id/tableRow1"
+         android:layout_weight="1"
+         >
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_1"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+            </FrameLayout>
+
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_2"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+                
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_3"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+            </TableRow>
+
+    <TableRow android:id="@+id/tableRow2"
+        android:layout_weight="1">
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_4"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+            </FrameLayout>
+
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_5"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+                
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_6"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+            </TableRow>
+    
+    <TableRow android:id="@+id/tableRow3"
+        android:layout_weight="1">
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_7"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+            </FrameLayout>
+
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_8"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+                
+            <FrameLayout 
+                android:layout_height="50sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+                <ImageView android:layout_width="wrap_content" 
+                    android:layout_height="wrap_content" 
+                     android:src="@drawable/button_blue"
+                    android:id="@+id/pattern_9"
+                    android:layout_gravity="center_horizontal">
+                </ImageView>
+                </FrameLayout>
+            </TableRow>
+    
+</TableLayout>

@@ -22,10 +22,17 @@
         android:text="@string/button_start" />
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/lat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/lon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20sp" />
+    
 </LinearLayout>

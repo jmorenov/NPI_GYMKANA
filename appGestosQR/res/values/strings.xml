@@ -2,9 +2,11 @@
 <resources>
 
     <string name="app_name">appGestosQR</string>
-    <string name="button_start">Iniciar appGPSVoz</string>
-    <string name="welcome">PuntoGPSVoz</string>
-	<string name="app_description">Explicación: </string>
+    <string name="button_start">Iniciar appGestosQR</string>
+    <string name="welcome">PuntoGestosQR</string>
+    <string name="app_description">Explicación: </string>
     <string name="result"></string>
-    
+    <string name="title_activity_pattern">PatternActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
